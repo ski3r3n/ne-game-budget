@@ -1,0 +1,36 @@
+Boxes
+screw this plan
+Type 0: Empty
+Type 1: Housing
+Type 2: Shopping Centres
+Type 3: Hospitals
+Type 4: Workspaces
+Type 5: Military
+Type 6: Schools
+Type 7: Airports
+transport is magical
+teleportation
+
+meters:
+- money (can be used to buy buildings, imple stuff)
+- happiness (yes)
+- recreation (yes)
+- population size (children, adults)
+- employment rate (adults)
+- healthcare quality (yes)
+- education (yes)
+- trade (yes)
+
+stuff you can do (yes):
+subsidies
+
+events!!!!!!!!!!
+(crises)
+
+Pandemic called SARSVID-20
+Global economic crisis
+War
+Invasion
+Riots
+Strike
+Terrorist
