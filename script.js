@@ -7,6 +7,8 @@ var state = 0,
     cid;
 // 0: idle, 1: placing
 
+var stats = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
 const rotate = (matrix) => {
     //taken from stackoverflow, clockwise
     return matrix[0].map((val, index) =>
@@ -44,6 +46,7 @@ var piecestoprice = [
     10000000, // yes, these are real prices (tweak if game becomes too unrealistic i got them from bad sources lol)
 ];
 var tcnt = [0, 0, 0, 0, 0, 0, 0, 0];
+// in order: money, happiness, recreation level, adult cnt, children cnt, employment cnt, education cnt, healthcare qual, trade rate
 var pieces = [
     [[1, 1, 1, 1, 1]],
     [
@@ -87,7 +90,21 @@ let px = 0,
     py = 0,
     valid = 0;
 
-let oneday = () => {};
+let secondcnt = 0, crq = 50;
+let cspeed = 0;
+
+let oneit = () => {
+    secondcnt += cspeed;
+    if (secondcnt >= crq) {
+        oneday();
+        crq += 50;
+    }
+    document.getElementById("money").innerHTML = stats[0];
+    document.getElementById("Happiness").innerHTML = stats[1].toString() + "%";
+};
+let oneday = () => {
+    console.log("day: " + (crq/50).toString())
+};
 let udisp = (cx, cy, id) => {
     for (let i = 0; i < pieces[id].length; i++) {
         for (let j = 0; j < pieces[id][0].length; j++) {
@@ -158,10 +175,14 @@ let prot = (acl) => {
 
 let cplace = () => {
     udisp(px, py, cid);
+    if (stats[0] < piecestoprice[cid]) {
+        alert("Not enough money! ")
+        return;
+    }
     if (valid) {
+        stats[0] -= piecestoprice[cid];
         tcnt[cid]++;
         buildingidcounter += 1;
-
         for (let i = 0; i < pieces[cid].length; i++) {
             for (let j = 0; j < pieces[cid][0].length; j++) {
                 if (pieces[cid][i][j]) {
@@ -189,11 +210,16 @@ let cplace = () => {
                 }
             }
         }
+        state = 0;
     }
-    state = 0;
+    else {
+        alert("Invalid placement! ")
+    }
 };
 
 const init = () => {
+    // in order: money, happiness, recreation level, adult cnt, children cnt, employment cnt, education cnt, healthcare qual, trade rate
+    stats = [10000000000, 70, 50, 200, 150, 100, 50, 50, 20];
     var board = document.getElementById("board");
     for (var i = 0; i < height; i++) {
         var crow = [];
@@ -257,11 +283,6 @@ const init = () => {
                 if (pieces[k][i][j] == 1) {
                     nb.style.border = "2px solid #2f2f2f";
                 }
-
-                console.log(nb);
-                console.log(i);
-                console.log(j);
-                console.log(piece);
                 nr.appendChild(nb);
             }
 
@@ -274,6 +295,7 @@ const init = () => {
         nx.appendChild(nd);
         col.appendChild(nx);
     }
+    setInterval(oneit, 100)
 };
 
 document.onkeydown = (event) => {
@@ -310,6 +332,10 @@ document.onkeydown = (event) => {
             prot(1);
         }
         if (keynum == 32) cplace();
+        if (keynum == 27) {
+            udisp(px, py, cid);
+            state = 0;
+        }
     }
 };
 
