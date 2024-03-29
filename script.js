@@ -33,6 +33,16 @@ var piecestocolor = [
     "lime",
     "beige",
 ];
+var piecestoprice = [
+    1500000000,
+    7393000,
+    50000000,
+    634263,
+    3000000,
+    200000000,
+    200000,
+    10000000, // yes, these are real prices (tweak if game becomes too unrealistic i got them from bad sources lol)
+];
 var tcnt = [0, 0, 0, 0, 0, 0, 0, 0];
 var pieces = [
     [[1, 1, 1, 1, 1]],
