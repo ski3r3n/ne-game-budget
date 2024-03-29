@@ -20,7 +20,7 @@ div#game {
 .side {
     float: left;
 }
-.stats {
+.stats, .options {
     display: block;
     text-align: center;
     margin: 0;
