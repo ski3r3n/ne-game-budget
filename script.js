@@ -7,7 +7,8 @@ var state = 0,
     cid;
 // 0: idle, 1: placing
 
-var stats = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+var stats = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+// in order: money, happiness, recreation level, adult cnt, children cnt, employment cnt, education cnt, healthcare qual, trade rate
 
 const rotate = (matrix) => {
     //taken from stackoverflow, clockwise
@@ -45,8 +46,7 @@ var piecestoprice = [
     200000,
     10000000, // yes, these are real prices (tweak if game becomes too unrealistic i got them from bad sources lol)
 ];
-var tcnt = [0, 0, 0, 0, 0, 0, 0, 0];
-// in order: money, happiness, recreation level, adult cnt, children cnt, employment cnt, education cnt, healthcare qual, trade rate
+var tcnt = [0, 0, 0, 0, 0, 0, 0, 0]; // count of
 var pieces = [
     [[1, 1, 1, 1, 1]],
     [
@@ -90,7 +90,8 @@ let px = 0,
     py = 0,
     valid = 0;
 
-let secondcnt = 0, crq = 50;
+let secondcnt = 0,
+    crq = 50;
 let cspeed = 0;
 
 let oneit = () => {
@@ -99,11 +100,19 @@ let oneit = () => {
         oneday();
         crq += 50;
     }
-    document.getElementById("money").innerHTML = stats[0];
-    document.getElementById("Happiness").innerHTML = stats[1].toString() + "%";
+    document.getElementById("0").innerHTML = stats[0];
+    document.getElementById("1").innerHTML = stats[1];
+    document.getElementById("2").innerHTML = stats[2];
+    document.getElementById("3").innerHTML = stats[3];
+    document.getElementById("4").innerHTML = stats[4];
+    document.getElementById("5").innerHTML = stats[5];
+    document.getElementById("6").innerHTML = stats[6];
+    document.getElementById("7").innerHTML = stats[7];
+    document.getElementById("8").innerHTML = stats[8];
+    document.getElementById("9").innerHTML = stats[9];
 };
 let oneday = () => {
-    console.log("day: " + (crq/50).toString())
+    console.log("day: " + (crq / 50).toString());
 };
 let udisp = (cx, cy, id) => {
     for (let i = 0; i < pieces[id].length; i++) {
@@ -176,7 +185,7 @@ let prot = (acl) => {
 let cplace = () => {
     udisp(px, py, cid);
     if (stats[0] < piecestoprice[cid]) {
-        alert("Not enough money! ")
+        alert("Not enough money! ");
         return;
     }
     if (valid) {
@@ -211,15 +220,14 @@ let cplace = () => {
             }
         }
         state = 0;
-    }
-    else {
-        alert("Invalid placement! ")
+    } else {
+        alert("Invalid placement! ");
     }
 };
 
 const init = () => {
     // in order: money, happiness, recreation level, adult cnt, children cnt, employment cnt, education cnt, healthcare qual, trade rate
-    stats = [10000000000, 70, 50, 200, 150, 100, 50, 50, 20];
+    stats = [10000000000, 50, 0, 300, 100, 0, 0, 0, 0, 400];
     var board = document.getElementById("board");
     for (var i = 0; i < height; i++) {
         var crow = [];
@@ -245,6 +253,7 @@ const init = () => {
                     if (idToDelete >= 0) {
                         // Ensure it's a valid piece id
                         tcnt[cboard[x][y]]--;
+                        stats[0] += piecestoprice[cboard[x][y]];
                         dfsDelete(x, y, idToDelete);
                     }
                 };
@@ -295,7 +304,7 @@ const init = () => {
         nx.appendChild(nd);
         col.appendChild(nx);
     }
-    setInterval(oneit, 100)
+    setInterval(oneit, 100);
 };
 
 document.onkeydown = (event) => {
