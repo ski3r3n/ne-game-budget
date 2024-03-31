@@ -100,6 +100,27 @@ let oneit = () => {
         oneday();
         crq += 50;
     }
+    stats[2] = tcnt[0] * 50 + tcnt[6] * 10;
+    stats[5] =
+        tcnt[0] * 80 +
+        tcnt[1] * 40 +
+        tcnt[2] * 40 +
+        tcnt[3] * 60 +
+        tcnt[4] * 20 +
+        tcnt[5] * 40 +
+        tcnt[6] * 10 +
+        tcnt[7] * 60;
+    if (stats[5] > stats[3]) {
+        stats[5] = stats[3];
+    }
+    stats[6] = tcnt[1] * 60;
+    if (stats[6] > stats[4]) {
+        stats[6] = stats[4];
+    }
+    stats[9] = tcnt[4] * 150;
+    if (stats[9] > stats[4] + stats[3]) {
+        stats[9] = stats[4] + stats[3];
+    }
     document.getElementById("0").innerHTML = stats[0];
     document.getElementById("1").innerHTML = stats[1];
     document.getElementById("2").innerHTML = stats[2];
