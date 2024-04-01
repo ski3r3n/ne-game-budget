@@ -6,12 +6,13 @@ html {
 }
 
 body {
-    display: flex;
     align-items: center;
     justify-content: center;
 }
 
 div#game {
+    display: flex;
+    flex-direction: row;
     height: 700px;
     width: 1000px;
     border: 3px solid #2f2f2f;
@@ -20,6 +21,7 @@ div#game {
 .side {
     float: left;
 }
+
 .stats,
 .options,
 .events {
@@ -27,6 +29,7 @@ div#game {
     text-align: center;
     margin: 0;
 }
+
 #spot {
     height: 100%;
     width: 100%;
@@ -44,10 +47,20 @@ td.board {
     width: 100%;
     height: 100%;
 }
-table#board {
+
+#board {
+    flex-grow:7;
     height: 700px;
     width: 700px;
     table-layout: fixed;
+}
+
+#piece {
+    flex-grow: 1;
+}
+
+#stats{
+    flex-grow: 2;
 }
 
 tr.board {
