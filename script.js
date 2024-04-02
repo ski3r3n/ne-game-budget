@@ -94,44 +94,44 @@ let secondcnt = 0,
     crq = 50;
 let cspeed = 0;
 
-let oneit = () => {
-    secondcnt += cspeed;
-    if (secondcnt >= crq) {
-        oneday();
-        crq += 50;
-    }
-    stats[2] = tcnt[0] * 50 + tcnt[6] * 10;
-    stats[5] =
-        tcnt[0] * 80 +
-        tcnt[1] * 40 +
-        tcnt[2] * 40 +
-        tcnt[3] * 60 +
-        tcnt[4] * 20 +
-        tcnt[5] * 40 +
-        tcnt[6] * 10 +
-        tcnt[7] * 60;
-    if (stats[5] > stats[3]) {
-        stats[5] = stats[3];
-    }
-    stats[6] = tcnt[1] * 60;
-    if (stats[6] > stats[4]) {
-        stats[6] = stats[4];
-    }
-    stats[9] = tcnt[4] * 150;
-    if (stats[9] > stats[4] + stats[3]) {
-        stats[9] = stats[4] + stats[3];
-    }
-    document.getElementById("0").innerHTML = stats[0];
-    document.getElementById("1").innerHTML = stats[1];
-    document.getElementById("2").innerHTML = stats[2];
-    document.getElementById("3").innerHTML = stats[3];
-    document.getElementById("4").innerHTML = stats[4];
-    document.getElementById("5").innerHTML = stats[5];
-    document.getElementById("6").innerHTML = stats[6];
-    document.getElementById("7").innerHTML = stats[7];
-    document.getElementById("8").innerHTML = stats[8];
-    document.getElementById("9").innerHTML = stats[9];
-};
+// let oneit = () => {
+//     secondcnt += cspeed;
+//     if (secondcnt >= crq) {
+//         oneday();
+//         crq += 50;
+//     }
+//     stats[2] = tcnt[0] * 50 + tcnt[6] * 10;
+//     stats[5] =
+//         tcnt[0] * 80 +
+//         tcnt[1] * 40 +
+//         tcnt[2] * 40 +
+//         tcnt[3] * 60 +
+//         tcnt[4] * 20 +
+//         tcnt[5] * 40 +
+//         tcnt[6] * 10 +
+//         tcnt[7] * 60;
+//     if (stats[5] > stats[3]) {
+//         stats[5] = stats[3];
+//     }
+//     stats[6] = tcnt[1] * 60;
+//     if (stats[6] > stats[4]) {
+//         stats[6] = stats[4];
+//     }
+//     stats[9] = tcnt[4] * 150;
+//     if (stats[9] > stats[4] + stats[3]) {
+//         stats[9] = stats[4] + stats[3];
+//     }
+//     document.getElementById("0").innerHTML = stats[0];
+//     document.getElementById("1").innerHTML = stats[1];
+//     document.getElementById("2").innerHTML = stats[2];
+//     document.getElementById("3").innerHTML = stats[3];
+//     document.getElementById("4").innerHTML = stats[4];
+//     document.getElementById("5").innerHTML = stats[5];
+//     document.getElementById("6").innerHTML = stats[6];
+//     document.getElementById("7").innerHTML = stats[7];
+//     document.getElementById("8").innerHTML = stats[8];
+//     document.getElementById("9").innerHTML = stats[9];
+// };
 let oneday = () => {
     console.log("day: " + (crq / 50).toString());
 };
@@ -325,7 +325,7 @@ const init = () => {
         nx.appendChild(nd);
         col.appendChild(nx);
     }
-    setInterval(oneit, 100);
+    setInterval(onTimerTick, 1000);
 };
 
 document.onkeydown = (event) => {
@@ -404,29 +404,38 @@ function eventOccur() {
 }
 
 
-setInterval(onTimerTick, 1000); // 33 milliseconds = ~ 30 frames per sec
+setInterval(onTimerTick, 1000); 
 
-var opcost = [100000, 1000000, 1000000, 1000000, 1000000, 100000, 1000000, 100000]
+var operationCost = [100000, 1000000, 1000000, 1000000, 1000000, 100000, 1000000, 100000]
 
-var time=60;
+var time=0;
+var month=0;
+var year=0;
 function onTimerTick() {
-    time--;
-    if(time<=-1){
-        window.location.href="win.html";
+    time++;
+    if(time%4=0){
+        month++;
+        if(month>=13){
+            month=0;
+            year++;
+            if(year>=5){
+                window.location.href="win.html";            
+            }
+        }
     }
     if(stats[0]<=0){
         window.location.href="lose.html";
     }
     var costToday=0;
     for(var i=0;i<8;i++){
-        costToday+=tcnt[i]*opcost[i];
+        costToday+=tcnt[i]*operationCost[i];
     }
     stats[0]-=costToday;
     if(time%10==5){
         eventOccur();
     }
     document.getElementById("0").innerHTML = stats[0];
-    document.getElementById("timer").innerHTML = time;
+    document.getElementById("timer").innerHTML = months + "months";
     console.log(tcnt)
 }
 
