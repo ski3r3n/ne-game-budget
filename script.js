@@ -413,7 +413,7 @@ var month=0;
 var year=0;
 function onTimerTick() {
     time++;
-    if(time%4=0){
+    if(time%4==0){
         month++;
         if(month>=13){
             month=0;
