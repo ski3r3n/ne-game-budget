@@ -403,7 +403,8 @@ setInterval(onTimerTick, 1000); // 33 milliseconds = ~ 30 frames per sec
 
 function onTimerTick() {
     var time=60;
-    document.getElementById("timer").innerHTML = time--;
+    time--;
+    document.getElementById("timer").innerHTML = time;
     console.log("tick")
 }
 
