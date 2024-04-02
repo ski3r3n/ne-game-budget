@@ -408,7 +408,7 @@ function onTimerTick() {
     if(time<=-1){
         window.location.href="win.html";
     }
-    if(money<=0){
+    if(stats[0]<=0){
         window.location.href="lose.html";
     }
     document.getElementById("timer").innerHTML = time;
