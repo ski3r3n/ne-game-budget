@@ -52,7 +52,7 @@ td.board {
     width: 15%;
 }
 
-#stats{
+#statsDiv{
     display: flex;
     flex-direction: column;
     width: 15%;
