@@ -75,10 +75,12 @@ img {
 
 #win {
     height:100%;
+    width: auto;
 }
 
 #lose{
     height:100%;
+    width: auto;
 }
 
 #retry{
