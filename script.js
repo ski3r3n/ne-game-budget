@@ -414,7 +414,7 @@ function onTimerTick() {
     }
     var costToday=0;
     for(var i=0;i<8;i++){
-        costToday+=tnct[i]*opcost[i];
+        costToday+=tcnt[i]*opcost[i];
     }
     stats[0]-=costToday;
     document.getElementById("0").innerHTML = stats[0];
