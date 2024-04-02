@@ -399,6 +399,11 @@ function dfsDelete(x, y, idToDelete) {
     dfsDelete(x, y - 1, idToDelete); // Left
 }
 
+function eventOccur() {
+    
+}
+
+
 setInterval(onTimerTick, 1000); // 33 milliseconds = ~ 30 frames per sec
 
 var opcost = [100000, 1000000, 1000000, 1000000, 1000000, 100000, 1000000, 100000]
@@ -417,6 +422,9 @@ function onTimerTick() {
         costToday+=tcnt[i]*opcost[i];
     }
     stats[0]-=costToday;
+    if(time%10==5){
+        eventOccur();
+    }
     document.getElementById("0").innerHTML = stats[0];
     document.getElementById("timer").innerHTML = time;
     console.log(tcnt)
