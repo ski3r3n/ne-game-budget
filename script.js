@@ -399,4 +399,10 @@ function dfsDelete(x, y, idToDelete) {
     dfsDelete(x, y - 1, idToDelete); // Left
 }
 
+setInterval(onTimerTick, 1000); // 33 milliseconds = ~ 30 frames per sec
+
+function onTimerTick() {
+    console.log("tick")
+}
+
 init();
