@@ -277,6 +277,23 @@ const init = () => {
                         stats[0] += piecestoprice[cboard[x][y]];
                         dfsDelete(x, y, idToDelete);
                     }
+                    if (state == 1) {
+                        if (px != 0) {
+                            udisp(px, py, cid);
+                            px--;
+                            pplace(px, py, cid);
+                            udisp(px, py, cid);
+                            px++;
+                            pplace(px, py, cid);
+                        } else {
+                            udisp(px, py, cid);
+                            px++;
+                            pplace(px, py, cid);
+                            udisp(px, py, cid);
+                            px--;
+                            pplace(px, py, cid);
+                        }
+                    }
                 };
             })(i, j);
         }
