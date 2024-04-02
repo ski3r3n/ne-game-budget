@@ -44,19 +44,18 @@ td.board {
 
 #boardDiv {
     flex-grow:7;
-    height: 700px;
-    width: 700px;
+    width: 70%;
     table-layout: fixed;
 }
 
 #piece {
-    flex-grow: 1;
+    width: 15%;
 }
 
 #stats{
     display: flex;
     flex-direction: column;
-    flex-grow: 2;
+    width: 15%;
 }
 
 tr.board {
