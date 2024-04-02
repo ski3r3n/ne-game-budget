@@ -417,7 +417,7 @@ function onTimerTick() {
         costToday+=tnct[i]*opcost[i];
     }
     stats[0]-=costToday;
-    
+    document.getElementById("0").innerHTML = stats[0];
     document.getElementById("timer").innerHTML = time;
     console.log(tcnt)
 }
