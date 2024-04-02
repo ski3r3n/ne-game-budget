@@ -402,6 +402,8 @@ function dfsDelete(x, y, idToDelete) {
 setInterval(onTimerTick, 1000); // 33 milliseconds = ~ 30 frames per sec
 
 function onTimerTick() {
+    var time=60;
+    document.querySelector(divSelector).innerHTML = time--;
     console.log("tick")
 }
 
