@@ -435,7 +435,7 @@ function onTimerTick() {
         eventOccur();
     }
     document.getElementById("0").innerHTML = stats[0];
-    document.getElementById("timer").innerHTML = months + "months";
+    document.getElementById("timer").innerHTML = month + "months";
     console.log(tcnt)
 }
 
