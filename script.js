@@ -402,7 +402,7 @@ function dfsDelete(x, y, idToDelete) {
 setInterval(onTimerTick, 1000); // 33 milliseconds = ~ 30 frames per sec
 
 
-var time=60~;
+var time=60;
 function onTimerTick() {
     time--;
     document.getElementById("timer").innerHTML = time;
