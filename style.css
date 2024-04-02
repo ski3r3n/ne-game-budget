@@ -42,7 +42,7 @@ td.board {
     height: 100%;
 }
 
-#board {
+#boardDiv {
     flex-grow:7;
     height: 700px;
     width: 700px;
