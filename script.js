@@ -405,6 +405,12 @@ setInterval(onTimerTick, 1000); // 33 milliseconds = ~ 30 frames per sec
 var time=60;
 function onTimerTick() {
     time--;
+    if(time<=-1){
+        window.location.href="win.html";
+    }
+    if(money<=0){
+        window.location.href="lose.html";
+    }
     document.getElementById("timer").innerHTML = time;
     console.log("tick")
 }
