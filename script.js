@@ -413,7 +413,7 @@ function onTimerTick() {
         window.location.href="lose.html";
     }
     var costToday=0;
-    for(int i=0;i<8;i++){
+    for(var i=0;i<8;i++){
         costToday+=tnct[i]*opcost[i];
     }
     stats[0]-=costToday;
