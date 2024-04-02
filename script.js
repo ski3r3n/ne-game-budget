@@ -412,7 +412,7 @@ function onTimerTick() {
         window.location.href="lose.html";
     }
     document.getElementById("timer").innerHTML = time;
-    console.log("tick")
+    console.log(tcnt)
 }
 
 init();
