@@ -182,12 +182,19 @@ div.pieces:hover {
 }
 
 #lose{
-    height:100%;
-    width: auto;
+    width:100%;
+    height: auto;
 }
 
 #retry{
     position: absolute;
     top:90%;
     z-index: 1;
+}
+
+#loseText {
+    position: absolute;
+    z-index: 2;
+    top: 70%;
+    color: white;
 }
