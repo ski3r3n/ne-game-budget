@@ -8,6 +8,7 @@ var state = 0,
 // 0: idle, 1: placing
 
 var stats = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var deathRate=0;
 // in order: money, happiness, recreation level, adult cnt, children cnt, employment cnt, education cnt, healthcare qual, trade rate
 
 const rotate = (matrix) => {
@@ -37,14 +38,14 @@ var piecestocolor = [
     "beige",
 ];
 var piecestoprice = [
-    1500000000,
-    7393000,
-    50000000,
-    634263,
-    3000000,
-    200000000,
-    200000,
-    10000000, // yes, these are real prices (tweak if game becomes too unrealistic i got them from bad sources lol)
+    150000,
+    73930,
+    500000,
+    6342,
+    30000,
+    20000,
+    2000,
+    100000, // yes, these are real prices (tweak if game becomes too unrealistic i got them from bad sources lol)
 ];
 var tcnt = [0, 0, 0, 0, 0, 0, 0, 0]; // count of
 var pieces = [
@@ -211,6 +212,7 @@ let cplace = () => {
     }
     if (valid) {
         stats[0] -= piecestoprice[cid];
+        moneyChange(piecestoprice[cid],-1);
         tcnt[cid]++;
         buildingidcounter += 1;
         for (let i = 0; i < pieces[cid].length; i++) {
@@ -247,17 +249,17 @@ let cplace = () => {
 };
 
 const init = () => {
-    // in order: money, happiness, recreation level, adult cnt, children cnt, employment cnt, education cnt, healthcare qual, trade rate
-    stats = [10000000000, 50, 0, 300, 100, 0, 0, 0, 0, 400];
+    // in order: money[0], happiness[1], adult cnt[2], children cnt[3], employment cnt[4], education cnt[5], healthcare qual[6], trade rate[7], housing[8]
+    stats = [10000000, 100, 4930000, 1000000, 0, 50, 50, 0, 0];
     var board = document.getElementById("board");
     for (var i = 0; i < height; i++) {
         var crow = [];
-        var row = document.createElement("tr");
+        var row = document.createElement("div");
         row.id = "row-" + i.toString();
         row.classList.add("row");
         row.classList.add("board");
         for (var j = 0; j < width; j++) {
-            var box = document.createElement("td");
+            var box = document.createElement("div");
             box.id = "box-" + i.toString() + "-" + j.toString();
             box.classList.add("box");
             box.classList.add("board");
@@ -301,14 +303,11 @@ const init = () => {
         cboard.push(crow);
         buildingids.push([...crow]);
     }
-    col = document.getElementById("pieces");
+    col = document.getElementById("piece");
     for (let k = 0; k < pieces.length; k++) {
         crott.push(0);
-        nx = document.createElement("tr");
-        nd = document.createElement("td");
-        nx.classList.add("pieces");
+        nd = document.createElement("div");
         nd.classList.add("pieces");
-        nd.classList.add("inline-block");
         nd.onclick = () => {
             if (state == 1) {
                 while (crott[cid] != 0) {
@@ -320,10 +319,10 @@ const init = () => {
             pplace(0, 0, k);
         };
         np = document.createElement("table");
-        np.classList.add("cpiece");
+        np.classList.add("pieceTable");
         for (let i = 0; i < pieces[k].length; i++) {
             nr = document.createElement("tr");
-            nr.classList.add("cpiece");
+            nr.classList.add("pieceShapeRow");
             for (let j = 0; j < pieces[k][0].length; j++) {
                 nb = document.createElement("td");
                 nb.classList.add("cpiece");
@@ -339,8 +338,7 @@ const init = () => {
         functionDisplay.textContent = piecestofunction[k];
         nd.appendChild(functionDisplay);
         nd.appendChild(np);
-        nx.appendChild(nd);
-        col.appendChild(nx);
+        col.appendChild(nd);
     }
     setInterval(onTimerTick, 1000);
 };
@@ -416,44 +414,168 @@ function dfsDelete(x, y, idToDelete) {
     dfsDelete(x, y - 1, idToDelete); // Left
 }
 
-function eventOccur() {
-    
+function update() {
+    for(var i=0;i<8;i++){
+        document.getElementById(i.toString()).innerHTML = stats[i];
+    }
+    document.getElementById("timer").innerHTML = month + " months" + "<br />" + year + " years";
+}
+
+function moneyChange(amount, sign) {
+    var dmgText = document.createElement("span");
+    dmgText.style.color="green";
+    if(sign<0){
+        dmgText.style.color="red";
+        dmgText.innerHTML += "-";
+    }
+    dmgText.innerHTML += "$" + amount.toString();
+    dmgText.classList += "FloatingCombatText";
+    document.getElementById("moneyTag").appendChild(dmgText);
+    dmgText.addEventListener("animationend", () => {dmgText.remove()});
+}
+
+let events = [
+    [-100000, -45, -20000, -1000, -20, 0, 0, -2000, "COVID-19 Pandemic"],
+    [-1000000, -50, -30000, -1000, 0, 0, 0, 0, -5000, "War"],
+    [0,-30,-40000,-1000,-90,-20,0,-10000, "AI Takeover"],
+    [-5000000, -70, -100, -5, -60, 0, -30, -60000, "Global Economic Crisis"]
+]
+
+function eventUpdate(stat_updates) {
+    for(var i;i<8;i++){
+        stats[i]+=stat_updates[i];
+    }
+}
+
+function lose(){
+    window.location.href="lose.html";
 }
 
 
-setInterval(onTimerTick, 1000); 
-
-var operationCost = [100000, 1000000, 1000000, 1000000, 1000000, 100000, 1000000, 100000]
+var operationCost = [100000, 1000, 1000, 1000, 1000, 1000, 1000, 1000]
 
 var time=0;
 var month=0;
 var year=0;
+var crisisCost=[];
 function onTimerTick() {
+    
+    console.log(Math.floor(Math.random()*2));
     time++;
-    if(time%4==0){
+    if(time%1==0){
         month++;
-        if(month>=13){
+        if(month>=12){
             month=0;
             year++;
+            //events
+            var eventid=Math.floor(Math.random()*4);
+            if(eventid=1&&tcnt[5]>=0){
+                lose();
+            }
+            crisisCost=events[eventid];
+            document.getElementById("event").innerHTML=crisisCost[9];
+            //win
             if(year>=5){
                 window.location.href="win.html";            
             }
         }
     }
-    if(stats[0]<=0){
-        window.location.href="lose.html";
-    }
+    console.log(crisisCost);
+    
+    //if not lost, change stats
+    //operation costs
     var costToday=0;
     for(var i=0;i<8;i++){
         costToday+=tcnt[i]*operationCost[i];
     }
     stats[0]-=costToday;
-    if(time%10==5){
-        eventOccur();
+    
+    //death rate
+    deathRate = (1-(stats[6]*0.01))*(1/100);
+    console.log(deathRate);
+    //population
+    var graduated = 200+Math.floor(Math.random()*101);
+    stats[2]-=stats[2]*deathRate;
+    stats[2]*=(201/200);
+    stats[2]+= graduated;
+    stats[2]=Math.floor(stats[2]);
+    update();
+    stats[3]-=graduated;
+    stats[3]+=Math.floor(stats[2]/2000)
+    //employment
+    var sumOfBuildings=0;
+    for(var i=0;i<8;i++){
+        if(i==4){
+            continue;
+        }
+        sumOfBuildings += tcnt[i];
     }
-    document.getElementById("0").innerHTML = stats[0];
-    document.getElementById("timer").innerHTML = month + " months" + "<br />" + year + "years";
-    console.log(tcnt)
+    stats[4]=sumOfBuildings*8
+    //education
+    var educatedNum=(stats[5]*0.01)*(stats[2]+stats[3]);
+    educatedNum+=tcnt[1]*2000;
+    stats[5]=Math.round(educatedNum/(stats[2]+stats[3])*10000)/100;
+    //healthcare
+    stats[6]+=tcnt[2]*2;
+    if(stats[6]>100){
+        stats[6]=100;
+    }
+    if(tcnt[2]==0){
+        stats[6]-=2;
+        if(stats[6]<0){
+            stats[6]=1;
+        }
+    }
+    //trade;
+    stats[7]=tcnt[0]*50000+Math.floor(Math.random()*10)*1000*stats[4];
+    console.log(stats);
+    //moneyyyyyy
+    //operation costs
+    var costToday=0;
+    for(var i=0;i<8;i++){
+        costToday+=tcnt[i]*operationCost[i];
+    }
+    stats[0]-=costToday;
+    //crisis costs
+    // eventUpdate(crisisCost)
+    //increase due to trade
+    stats[0]+=stats[7];
+    //housed
+    stats[8] = Math.max(tcnt[4] * 20000, stats[2]+stats[3]);
+    //happiness
+    stats[1]+=tcnt[6]*3;
+    if(stats[5]>80){
+        stats[1]+=1;
+    } 
+    if(stats[4]>80){
+        stats[1]+=1;
+    }
+    if(stats[7]>1500000){
+        stats[1]+=1;
+    }
+    if(stats[4]<20){
+        stats[1]-=1;
+    }
+    if(stats[6]<40){
+        stats[1]-=1;
+    }
+    if (stats[8]/(stats[2]+stats[3])<0.8){
+        stats[1]-=2;
+    }
+    //crisis costs
+    eventUpdate(crisisCost);
+
+    //losing conditions
+    if(stats[0]<=0){
+        console.log(1);
+        lose();
+    } else if(stats[1]<15){
+        console.log(2);
+        lose();
+    } else if(stats[2]<1000||stats[3]<100){
+        console.log(3);
+        lose();
+    }
 }
 
 init();
