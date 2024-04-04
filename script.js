@@ -213,6 +213,7 @@ let cplace = () => {
     if (valid) {
         stats[0] -= piecestoprice[cid];
         moneyChange(piecestoprice[cid],-1);
+        update();
         tcnt[cid]++;
         buildingidcounter += 1;
         for (let i = 0; i < pieces[cid].length; i++) {
@@ -340,7 +341,8 @@ const init = () => {
         nd.appendChild(np);
         col.appendChild(nd);
     }
-    setInterval(onTimerTick, 1000);
+    update();
+    setInterval(onTimerTick, 4000);
 };
 
 document.onkeydown = (event) => {
@@ -463,30 +465,35 @@ var time=0;
 var month=0;
 var year=0;
 var crisisCost=[0,0,0,0,0,0,0,0,"nothing atm"];
+var warCount=3;
 function onTimerTick() {
     time++;
-    if(time%1==0){
-        month++;
-        if(month>=12){
-            month=0;
-            year++;
-            //events
-            var eventid=Math.floor(Math.random()*4);
-            if(eventid==1&&tcnt[5]==0){
+    month++;
+    if(month>=12){
+        month=0;
+        year++;
+        //events
+        var eventid=Math.floor(Math.random()*4);
+        crisisCost=events[eventid];
+        if(eventid==1&&tcnt[5]==0){
+            if(warCount>0){
+                warCount--;
+            } else {
                 lose("war");
             }
-            crisisCost=events[eventid];
-            document.getElementById("event").innerHTML=crisisCost[8];
-            //win
-            if(year>=5){
-                window.location.href="win.html";            
-            }
+        }
+        document.getElementById("event").innerHTML=crisisCost[8];
+        alert("Event: " +crisisCost[8]);
+        //win
+        if(year>=5){
+            window.location.href="win.html";            
         }
     }
+
     //death rate
     deathRate = (1-(stats[6]*0.01))*(1/100);
     //healthcare
-    stats[6]+=tcnt[2]*0.02;
+    stats[6]+=tcnt[2]*2;
     if(stats[6]>100){
         stats[6]=100;
     }
