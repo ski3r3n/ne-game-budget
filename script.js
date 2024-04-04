@@ -416,7 +416,7 @@ function dfsDelete(x, y, idToDelete) {
 
 function update() {
     for(var i=0;i<8;i++){
-        document.getElementById(i.toString()).innerHTML = stats[i];
+        document.getElementById(i.toString()).innerHTML = Math.floor(stats[i]*100)*0.01;
     }
     document.getElementById("timer").innerHTML = month + " months" + "<br />" + year + " years";
 }
@@ -435,20 +435,25 @@ function moneyChange(amount, sign) {
 }
 
 let events = [
-    [-100000, -45, -20000, -1000, -20, 0, 0, -2000, "COVID-19 Pandemic"],
-    [-1000000, -50, -30000, -1000, 0, 0, 0, -5000, "War"],
-    [0,-30,-40000,-1000,-90,-20,0,-10000, "AI Takeover"],
-    [-5000000, -70, -100, -5, -60, 0, -30, -60000, "Global Economic Crisis"]
+    [-10000, -3, -2000, -100, -2, 0, 0, -2000, "COVID-19 Pandemic"],
+    [-50000, -5, -3000, -100, 0, 0, 0, -5000, "War"],
+    [0, -3, -1000, -90, -2, 0, 0, -10000, "AI Takeover"],
+    [-50000, -4, -100, -5, -5, 0, -2, -10000, "Global Economic Crisis"]
 ]
 
 function eventUpdate(stat_updates) {
-    for(var i;i<8;i++){
+    for(var i=0;i<8;i++){
         stats[i]+=stat_updates[i];
+        if(stats[i]<0){
+            stats[i]=0;
+        }
     }
+    console.log("crisis stats: " + stats);
 }
 
-function lose(){
-    window.location.href="lose.html";
+function lose(loseid){
+    sessionStorage.setItem("lostBy", loseid);
+    window.location.href = "lose.html";
 }
 
 
@@ -457,10 +462,8 @@ var operationCost = [100000, 1000, 1000, 1000, 1000, 1000, 1000, 1000]
 var time=0;
 var month=0;
 var year=0;
-var crisisCost=[];
+var crisisCost=[0,0,0,0,0,0,0,0,"nothing atm"];
 function onTimerTick() {
-    
-    console.log(Math.floor(Math.random()*2));
     time++;
     if(time%1==0){
         month++;
@@ -470,7 +473,7 @@ function onTimerTick() {
             //events
             var eventid=Math.floor(Math.random()*4);
             if(eventid==1&&tcnt[5]==0){
-                lose();
+                lose("war");
             }
             crisisCost=events[eventid];
             document.getElementById("event").innerHTML=crisisCost[8];
@@ -480,19 +483,20 @@ function onTimerTick() {
             }
         }
     }
-    console.log(crisisCost);
-    
-    //if not lost, change stats
-    //operation costs
-    var costToday=0;
-    for(var i=0;i<8;i++){
-        costToday+=tcnt[i]*operationCost[i];
-    }
-    stats[0]-=costToday;
-    
     //death rate
     deathRate = (1-(stats[6]*0.01))*(1/100);
-    console.log(deathRate);
+    //healthcare
+    stats[6]+=tcnt[2]*0.02;
+    if(stats[6]>100){
+        stats[6]=100;
+    }
+    if(tcnt[2]==0){
+        stats[6]-=2;
+        if(stats[6]<0){
+            stats[6]=1;
+            deathRate*=5;
+        }
+    }
     //population
     var graduated = 200+Math.floor(Math.random()*101);
     stats[2]-=stats[2]*deathRate;
@@ -500,8 +504,9 @@ function onTimerTick() {
     stats[2]+= graduated;
     stats[2]=Math.floor(stats[2]);
     update();
+    stats[3]-=stats[3]*deathRate;
     stats[3]-=graduated;
-    stats[3]+=Math.floor(stats[2]/2000)
+    stats[3]=Math.floor(stats[3]+stats[2]/2000)
     //employment
     var sumOfBuildings=0;
     for(var i=0;i<8;i++){
@@ -515,20 +520,8 @@ function onTimerTick() {
     var educatedNum=(stats[5]*0.01)*(stats[2]+stats[3]);
     educatedNum+=tcnt[1]*2000;
     stats[5]=Math.round(educatedNum/(stats[2]+stats[3])*10000)/100;
-    //healthcare
-    stats[6]+=tcnt[2]*2;
-    if(stats[6]>100){
-        stats[6]=100;
-    }
-    if(tcnt[2]==0){
-        stats[6]-=2;
-        if(stats[6]<0){
-            stats[6]=1;
-        }
-    }
     //trade;
-    stats[7]=tcnt[0]*50000+Math.floor(Math.random()*10)*1000*stats[4];
-    console.log(stats);
+    stats[7]=Math.floor((tcnt[0]*50000+Math.floor(Math.random()*10)*1000*stats[4])*(100-deathRate))*0.01;
     //moneyyyyyy
     //operation costs
     var costToday=0;
@@ -536,12 +529,11 @@ function onTimerTick() {
         costToday+=tcnt[i]*operationCost[i];
     }
     stats[0]-=costToday;
-    //crisis costs
-    // eventUpdate(crisisCost)
     //increase due to trade
     stats[0]+=stats[7];
+    stats[0]=Math.floor(stats[0]);
     //housed
-    stats[8] = Math.max(tcnt[4] * 20000, stats[2]+stats[3]);
+    stats[8] = Math.min(tcnt[4] * 2000000, stats[2]+stats[3]);
     //happiness
     stats[1]+=tcnt[6]*3;
     if(stats[5]>80){
@@ -553,28 +545,29 @@ function onTimerTick() {
     if(stats[7]>1500000){
         stats[1]+=1;
     }
+    if(stats[8]/stats[2]+stats[3]>0.8){
+        stats[1]+=4
+    }
     if(stats[4]<20){
-        stats[1]-=1;
+        stats[1]-=2;
     }
     if(stats[6]<40){
-        stats[1]-=1;
-    }
-    if (stats[8]/(stats[2]+stats[3])<0.8){
         stats[1]-=2;
+    }
+    if (stats[8]/(stats[2]+stats[3])<0.2){
+        console.log("homeless")
+        stats[1]-=4;
     }
     //crisis costs
     eventUpdate(crisisCost);
 
     //losing conditions
     if(stats[0]<=0){
-        console.log(1);
-        lose();
+        lose("money");
     } else if(stats[1]<15){
-        console.log(2);
-        lose();
+        lose("sad");
     } else if(stats[2]<1000||stats[3]<100){
-        console.log(3);
-        lose();
+        lose("lack of people");
     }
 }
 
