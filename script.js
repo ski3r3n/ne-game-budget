@@ -473,7 +473,7 @@ function onTimerTick() {
                 lose();
             }
             crisisCost=events[eventid];
-            document.getElementById("event").innerHTML=crisisCost[9];
+            document.getElementById("event").innerHTML=crisisCost[8];
             //win
             if(year>=5){
                 window.location.href="win.html";            
