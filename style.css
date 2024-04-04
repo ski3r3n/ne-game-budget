@@ -14,65 +14,168 @@ body {
     justify-content: center;
 }
 
+
 div#game {
+    width: 100vh;
+    height: 70vh;
     display: flex;
     flex-direction: row;
-    height: 700px;
-    width: 1000px;
     border: 3px solid #2f2f2f;
 }
 
-#spot {
-    height: 100%;
+/* board */
+#boardDiv {
+    display: flex;
+    flex-basis: 70%;
+}
+
+#board {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    border: 0px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
-td.board {
+div.board {
+    margin: 0px;
     padding: 0px;
+    display: flex;
+    flex-basis: 12.5%;
+    flex-direction: row;
 }
 
-.board,
-.pieces {
-    border: 3px solid #2f2f2f;
+div.board {
+    padding: 0px;
+    margin: 0px;
+    flex-grow: 1;
+}
+
+img {
+    object-fit: contain;
+    width: 100%;
+}
+
+/* stats */
+#statsDiv{
+    box-sizing: border-box;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 20%;
+    position: relative;
+}
+
+#timer {
+    position: absolute;
+    font-size: 3vh;
+    bottom: 3vh;
+}
+
+/* pieces */
+#piece {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 10%;
+    /* width: 15%; */
+}
+
+div.pieces {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 0;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.cpiece {
+    border: 0px;
     border-collapse: collapse;
 }
 
-.fit {
+/* table.pieces {
     width: 100%;
-    height: 100%;
-}
-
-#boardDiv {
-    flex-grow:7;
-    width: 70%;
+    border-collapse: collapse;
     table-layout: fixed;
 }
 
-#piece {
-    width: 15%;
+tr.pieces {
+    height: 12.5%;
+    width: auto;
 }
 
-#statsDiv{
-    display: flex;
-    flex-direction: column;
-    width: 15%;
-}
-
-tr.board {
-    height: 82.8px;
+td.pieces {
+    height: max-content;
+    flex-grow: 1;
+    text-align: center;
     padding: 0;
-    margin: 0;
-    width: 82.8px;
-}
-img {
-    height: 82px;
-    width: 82px;
-    position: relative !important;
-    left: 0.4px !important;
-    top: 0.4px !important;
+} */
+
+/* table.cpiece {
+    margin: 0px auto;
 }
 
+td.cpiece {
+    height: auto;
+    width: 20%;
+    padding: 0px;
+} */
+
+/* words */
+h3 {
+    font-size: 3vh;
+    margin: 0px;
+}
+
+p {
+    margin: 0.5vh;
+    font-size: 2vh;
+}
+
+.FloatingCombatText {
+    position: absolute;
+    z-index: 2;
+    margin-left: -10%;
+    font-size: 1rem;
+    animation: up 3s;
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+    animation-iteration-count: 1;
+    transform-origin: center;
+}
+
+/* animation */
+@keyframes up {
+    0% {
+      transform: scale(0) translateY(0%);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+      transform: scale(1) translateY(-50%);
+    }
+    100% {
+      transform: translateY(-100%) rotateZ(15deg);
+      opacity: 0;
+    }
+}
+
+div.pieces:hover {
+    background-color: #fe8686;
+}
+
+/* border */
+.panel {
+    outline: 1px solid black;
+}
+.board,
+.pieces {
+    outline: 1px solid #2f2f2f;
+    border-collapse: collapse;
+}
+
+
+/* final pages */
 #win {
     height:100%;
     width: auto;
@@ -87,47 +190,4 @@ img {
     position: absolute;
     top:90%;
     z-index: 1;
-}
-
-table.pieces {
-    width: 100px;
-    border-collapse: collapse;
-}
-
-.cpiece {
-    border: 0px;
-    border-collapse: collapse;
-}
-
-tr.pieces {
-    height: 87.2px;
-    width: 87.2px;
-    table-layout: fixed;
-}
-
-td.pieces {
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0;
-}
-
-td.pieces:hover {
-    background-color: #fe8686;
-}
-
-table.cpiece {
-    margin: 0px auto;
-}
-
-td.cpiece {
-    height: 15px;
-    width: 15px;
-    padding: 0px;
-}
-
-button {
-    height: 87.2px;
-    width: 87.2px;
-    table-layout: fixed;
 }
