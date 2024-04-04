@@ -469,7 +469,7 @@ function onTimerTick() {
             year++;
             //events
             var eventid=Math.floor(Math.random()*4);
-            if(eventid=1&&tcnt[5]>=0){
+            if(eventid==1&&tcnt[5]==0){
                 lose();
             }
             crisisCost=events[eventid];
