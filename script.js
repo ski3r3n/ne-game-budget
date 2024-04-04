@@ -465,7 +465,7 @@ var time=0;
 var month=0;
 var year=0;
 var crisisCost=[0,0,0,0,0,0,0,0,"nothing atm"];
-var warCount=3;
+var gracePeriod=3;
 function onTimerTick() {
     time++;
     month++;
@@ -475,15 +475,14 @@ function onTimerTick() {
         //events
         var eventid=Math.floor(Math.random()*4);
         crisisCost=events[eventid];
+        document.getElementById("event").innerHTML=crisisCost[8];
+        alert("Event: " +crisisCost[8]);
+        gracePeriod=3;
         if(eventid==1&&tcnt[5]==0){
-            if(warCount>0){
-                warCount--;
-            } else {
+            if(gracePeriod<=0){
                 lose("war");
             }
         }
-        document.getElementById("event").innerHTML=crisisCost[8];
-        alert("Event: " +crisisCost[8]);
         //win
         if(year>=5){
             window.location.href="win.html";            
@@ -566,7 +565,11 @@ function onTimerTick() {
         stats[1]-=4;
     }
     //crisis costs
-    eventUpdate(crisisCost);
+    if(gracePeriod<=0){
+        eventUpdate(crisisCost);
+    } else {
+        gracePeriod--;
+    }
 
     //losing conditions
     if(stats[0]<=0){
