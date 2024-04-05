@@ -478,17 +478,17 @@ function onTimerTick() {
         document.getElementById("event").innerHTML=crisisCost[8];
         alert("Event: " +crisisCost[8]);
         gracePeriod=3;
-        if(eventid==1&&tcnt[5]==0){
-            if(gracePeriod<=0){
-                lose("war");
-            }
-        }
         //win
         if(year>=5){
             window.location.href="win.html";            
         }
     }
-
+    
+    if(eventid==1&&tcnt[5]==0){
+        if(gracePeriod<=0){
+            lose("war");
+        }
+    }
     //death rate
     deathRate = (1-(stats[6]*0.01))*(1/100);
     //healthcare
